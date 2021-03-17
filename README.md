@@ -1,4 +1,4 @@
-#Spot Pi
+# Spot Pi
 
 [Initial Setup Guide](setup_spot_pi.md)
 
