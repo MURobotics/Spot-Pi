@@ -2,36 +2,36 @@
 import os
 import time
 
-#Write data to .conf file
+#This function writes data to a .conf file and saves it to the proper directory.
 def writeToFile(conf):
-    with open ("/etc/wpa_supplicant/TigerWiFi.conf", "w") as file:
+    directory = "/etc/wpa_supplicant/TigerWiFi.conf"
+    with open (directory, "w") as file:
         file.write("ctrl_interface=DIR=/var/wpa_supplicant\n")
         file.write(conf)
         file.write("\n")
+        print(f"\n\nSuccesfully written to {directory}\n\n")
 
-#Easy setup for TigerWiFi network at Mizzou
+#This function builds the string to be written to a .conf file specifically for University of Missouri TigerWiFi.
 def TigerWiFi(identity, password):
     conf = "network={\n  ssid=\"TigerWiFi\"\n  key_mgmt=WPA-EAP\n  eap=PEAP\n  phase2=\"MSCHAPV2\"\n  identity="+f"\"{identity}\"\n  "+f"password=\"{password}\"\n"+"}"
     writeToFile(conf)
-    print("\n\nSuccess!\n\n")
     time.sleep(5)
     os.system('clear')
     print("\n\nRebooting Pi...\n\n")
-    time.sleep(3)
+    time.sleep(5)
     os.system('reboot')
 
-#Setup for generic wifi network 
-#MIGHT REQUIRE MANUAL CONFIGURATION
+#This function builds the string to be written to a .conf file for any generic WiFi network.
+#Certain networks might require manual configuration by directly writing to the .conf file.
 def GenericWiFi(securityType, ssid, password):
     conf = "network={\n  ssid="+f"\"{ssid}\"\n  key_mgmt=\"{securityType}\"\n  psk=\"{password}\"\n"+"}"
     writeToFile(conf)
-    print("\n\nSuccess!\n\n")
+    print("\nThis configuration may not work properly and may require manual configuration.\n")
+    print("\nRebooting Pi...\n")
     time.sleep(5)
-    os.system('clear')
-    print("\n\nRebooting Pi...\n\n")
-    time.sleep(3)
     os.system('reboot')
 
+#This is the main function that produces a very tasteful UI.
 def main():
     os.system('clear')
     print("="*os.get_terminal_size().columns)
